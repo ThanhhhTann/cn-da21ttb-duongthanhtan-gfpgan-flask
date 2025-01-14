@@ -1,0 +1,24 @@
+<!-- backend/app/templates/login.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Nhập</title>
+    <link rel="stylesheet" href="/frontend/css/login.css">
+</head>
+<body>
+    <h2>Đăng Nhập</h2>
+    <form action="/auth/login" method="POST">
+        <label for="username">Tên đăng nhập:</label>
+        <input type="text" name="username" required>
+        
+        <label for="password">Mật khẩu:</label>
+        <input type="password" name="password" required>
+        
+        <button type="submit">Đăng nhập</button>
+    </form>
+
+    <!-- Nút Đăng Nhập Microsoft -->
+    <a href="/auth/microsoft"><button>Đăng nhập với Microsoft</button></a>
+</body>
+</html>

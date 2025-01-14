@@ -1,0 +1,14 @@
+<!-- backend/app/templates/index.html -->
+{% extends 'base.html' %}
+
+{% block title %}Trang Chủ{% endblock %}
+
+{% block content %}
+    <h1>Chào mừng đến Trang Chủ!</h1>
+    <p>Đây là trang chủ dành cho tất cả người dùng.</p>
+    {% if is_admin %}
+        <p>Bạn đang đăng nhập với vai trò <strong>Admin</strong>.</p>
+    {% else %}
+        <p>Bạn đang đăng nhập với vai trò <strong>User</strong>.</p>
+    {% endif %}
+{% endblock %}

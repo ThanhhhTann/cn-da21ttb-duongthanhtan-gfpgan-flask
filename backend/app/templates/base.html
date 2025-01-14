@@ -1,0 +1,24 @@
+<!-- backend/app/templates/base.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Trang Web{% endblock %}</title>
+    <link rel="stylesheet" href="/frontend/css/index.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Trang chủ</a>
+            {% if is_admin %}
+                <a href="/admin">Trang Quản Trị</a>
+            {% endif %}
+            <a href="/auth/logout">Đăng xuất</a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

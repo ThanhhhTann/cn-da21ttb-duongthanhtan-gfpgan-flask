@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Ký</title>
+    <link rel="stylesheet" href="/frontend/css/register.css">
+</head>
+<body>
+    <h2>Đăng Ký Tài Khoản</h2>
+    <form action="/auth/register" method="POST">
+        <label for="username">Tên đăng nhập:</label>
+        <input type="text" name="username" required>
+        
+        <label for="email">Email:</label>
+        <input type="email" name="email" required>
+        
+        <label for="password">Mật khẩu:</label>
+        <input type="password" name="password" required>
+        
+        <button type="submit">Đăng ký</button>
+    </form>
+    <p>Đã có tài khoản? <a href="/auth/login">Đăng nhập</a></p>
+</body>
+</html>
