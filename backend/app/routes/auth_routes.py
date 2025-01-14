@@ -6,6 +6,9 @@ from flask_jwt_extended import create_access_token, jwt_required, unset_jwt_cook
 from datetime import timedelta
 import requests
 import os
+import random
+from azure.communication.email import EmailClient
+from datetime import datetime, timedelta
 
 auth_blueprint = Blueprint('auth', __name__)
 
@@ -24,27 +27,7 @@ def login_page():
     return render_template('login.html')
 
 # Đăng ký người dùng
-@auth_blueprint.route('/register', methods=['POST'])
-def register():
-    data = request.form
-    if not data.get('username') or not data.get('password'):
-        flash("Thiếu thông tin cần thiết!")
-        return redirect(url_for('auth.register_page'))
 
-    if User.query.filter_by(user_username=data['username']).first():
-        flash("Tên người dùng đã tồn tại!")
-        return redirect(url_for('auth.register_page'))
-
-    new_user = User(
-        user_username=data['username'],
-        user_email=data['email']
-    )
-    new_user.set_password(data['password'])
-    db.session.add(new_user)
-    db.session.commit()
-
-    flash("Đăng ký thành công!")
-    return redirect(url_for('auth.login_page'))
 
 # Đăng nhập bằng tài khoản thường
 @auth_blueprint.route('/login', methods=['POST'])
@@ -152,3 +135,90 @@ def microsoft_callback():
     set_access_cookies(response, jwt_token)
     flash("Đăng nhập thành công với Microsoft!")
     return response
+
+#
+# OTP Mail Azure khi người dùng đăng ký
+#
+
+# Hàm gửi OTP qua Email
+def send_otp_email(email, otp_code):
+    connection_string = os.getenv("AZURE_EMAIL_CONNECTION_STRING")
+    client = EmailClient.from_connection_string(connection_string)
+
+    message = {
+        "senderAddress": "DoNotReply@e6b01f03-d4eb-408b-89eb-f6ea8cdae076.azurecomm.net",
+        "recipients": {"to": [{"address": email}]},
+        "content": {
+            "subject": "Mã OTP xác thực tài khoản của bạn",
+            "plainText": f"Mã OTP của bạn là: {otp_code}",
+        },
+    }
+    client.begin_send(message)
+
+
+# Cập nhật route /register
+@auth_blueprint.route('/register', methods=['POST'])
+def register():
+    data = request.form
+    if not data.get('username') or not data.get('email') or not data.get('password'):
+        flash("Thiếu thông tin cần thiết!")
+        return redirect(url_for('auth.register_page'))
+
+    # Kiểm tra trùng lặp email
+    if User.query.filter_by(user_email=data['email']).first():
+        flash("Email đã tồn tại!")
+        return redirect(url_for('auth.register_page'))
+
+    # Lưu thông tin vào session thay vì tạo ngay trong CSDL
+    otp_code = str(random.randint(100000, 999999))
+    session['otp_code'] = otp_code
+    session['otp_expiry'] = (datetime.utcnow() + timedelta(minutes=5)).isoformat()
+    session['temp_user'] = {
+        "username": data['username'],
+        "email": data['email'],
+        "password": data['password'],
+    }
+
+    send_otp_email(data['email'], otp_code)
+    flash("OTP đã được gửi đến email của bạn. Vui lòng kiểm tra!")
+    return redirect(url_for('auth.verify_otp'))
+
+# Trang xác thực OTP
+@auth_blueprint.route('/verify_otp', methods=['GET'])
+def verify_otp_page():
+    return render_template('verify_otp.html')
+
+# Xác thực OTP
+@auth_blueprint.route('/verify_otp', methods=['POST'])
+def verify_otp():
+    otp_code = request.form.get('otp_code')
+
+    # Lấy dữ liệu từ session
+    stored_otp = session.get('otp_code')
+    otp_expiry = session.get('otp_expiry')
+    temp_user = session.get('temp_user')
+
+    if not stored_otp or not otp_expiry or not temp_user:
+        flash("Yêu cầu không hợp lệ hoặc đã hết hạn!")
+        return redirect(url_for('auth.register_page'))
+
+    if stored_otp != otp_code or datetime.utcnow() > datetime.fromisoformat(otp_expiry):
+        flash("Mã OTP không hợp lệ hoặc đã hết hạn!")
+        return redirect(url_for('auth.verify_otp'))
+
+    # Tạo người dùng sau khi OTP được xác thực
+    new_user = User(
+        user_username=temp_user['username'],
+        user_email=temp_user['email']
+    )
+    new_user.set_password(temp_user['password'])
+    db.session.add(new_user)
+    db.session.commit()
+
+    # Xóa session
+    session.pop('otp_code', None)
+    session.pop('otp_expiry', None)
+    session.pop('temp_user', None)
+
+    flash("Xác thực thành công! Bạn có thể đăng nhập.")
+    return redirect(url_for('auth.login_page'))
