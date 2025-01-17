@@ -97,48 +97,67 @@ def microsoft_callback():
         "grant_type": "authorization_code"
     }
     
-    # Trao đổi mã code để lấy token từ Microsoft
+    # Lấy token từ Microsoft
     response = requests.post(MICROSOFT_TOKEN_URL, data=token_data)
     token_json = response.json()
+    print("Token JSON:", token_json)  # ✅ Debug token
 
-    # Kiểm tra lỗi từ phía Microsoft
     if 'access_token' not in token_json:
         flash("Xác thực Microsoft thất bại!")
         return redirect(url_for('auth.login_page'))
 
-    # Lấy access token và user info
+    # Lấy access token
     access_token = token_json['access_token']
     headers = {"Authorization": f"Bearer {access_token}"}
+
+    # Lấy thông tin người dùng
     user_info_response = requests.get("https://graph.microsoft.com/v1.0/me", headers=headers)
     user_info = user_info_response.json()
+    print("User Info:", user_info)  # ✅ Debug thông tin user
 
-    # Kiểm tra xem có nhận được email không
+    # Thử lấy avatar từ Microsoft Graph API
+    avatar_url = "https://refinaimages-ehh5dse7h5f8g5ga.z02.azurefd.net/images/cn-logo-default-1.webp"
+    try:
+        avatar_response = requests.get("https://graph.microsoft.com/v1.0/me/photo/$value", headers=headers)
+        print(f"Avatar Response Status: {avatar_response.status_code}")  # ✅ Debug mã trạng thái
+        if avatar_response.status_code == 200:
+            from base64 import b64encode
+            avatar_base64 = b64encode(avatar_response.content).decode('utf-8')
+            avatar_url = f"data:image/jpeg;base64,{avatar_base64}"
+        else:
+            print("Không tìm thấy avatar từ Microsoft Graph.")
+    except Exception as e:
+        print(f"Lỗi khi lấy avatar: {e}")
+
+    # Kiểm tra xem user đã tồn tại hay chưa
     user_email = user_info.get('userPrincipalName')
-    if not user_email:
-        flash("Không thể lấy thông tin tài khoản Microsoft!")
-        return redirect(url_for('auth.login_page'))
-
-    # Tìm kiếm hoặc tạo người dùng mới
+    display_name = user_info.get('displayName')
     existing_user = User.query.filter_by(user_email=user_email).first()
+
     if not existing_user:
         new_user = User(
-            user_username=user_info.get('displayName'),
-            user_email=user_email
+            user_username=display_name,
+            user_email=user_email,
+            user_avatar=avatar_url
         )
         db.session.add(new_user)
         db.session.commit()
-        flash("Tài khoản mới đã được tạo!")
+    else:
+        # Cập nhật avatar nếu chưa có
+        if not existing_user.user_avatar:
+            existing_user.user_avatar = avatar_url
+            db.session.commit()
 
-    # Tạo JWT Token và lưu vào cookie
+    # Đăng nhập thành công
     jwt_token = create_access_token(identity=user_email, additional_claims={"role": "user"})
     response = make_response(redirect(url_for('main.home')))
     set_access_cookies(response, jwt_token)
     flash("Đăng nhập thành công với Microsoft!")
     return response
 
-#
+#######################################
 # OTP Mail Azure khi người dùng đăng ký
-#
+#######################################
 
 # Hàm gửi OTP qua Email
 def send_otp_email(email, otp_code):

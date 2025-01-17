@@ -16,6 +16,13 @@
             {% endif %}
             <a href="/auth/logout">Đăng xuất</a>
         </nav>
+        <!-- Hiển thị Avatar -->
+        {% if current_user %}
+            <img src="{{ current_user.user_avatar }}" alt="Avatar" style="width:50px; border-radius:50%;">
+        {% else %}
+            <img src="https://refinaimages-ehh5dse7h5f8g5ga.z02.azurefd.net/images/cn-logo-default-1.webp" 
+            alt="Default Avatar" style="width:50px; border-radius:50%;">
+        {% endif %}
     </header>
     <main>
         {% block content %}{% endblock %}

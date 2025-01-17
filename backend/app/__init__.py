@@ -21,10 +21,12 @@ jwt = JWTManager(app)
 from backend.app.routes.auth_routes import auth_blueprint
 from .routes.main_routes import main_blueprint
 from .routes.frontend_routes import frontend_bp
+from .routes.password_routes import password_blueprint  # ✅ Đăng ký mới
 
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
 app.register_blueprint(main_blueprint)
 app.register_blueprint(frontend_bp)
+app.register_blueprint(password_blueprint, url_prefix='/password')  # ✅ Đăng ký mới
 
 # Tạo CSDL nếu chưa tồn tại
 with app.app_context():

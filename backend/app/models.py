@@ -15,6 +15,9 @@ class User(db.Model):
     user_role = db.Column(String(20), default='user')
     user_created_at = db.Column(DateTime, default=datetime.utcnow)
     user_updated_at = db.Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    user_avatar = db.Column(String(255), default="https://refinaimages-ehh5dse7h5f8g5ga.z02.azurefd.net/images/cn-logo-default-1.webp")  # ✅ Thêm avatar mặc định
+    reset_otp_code = db.Column(String(6), nullable=True)
+    reset_otp_expiry = db.Column(DateTime, nullable=True)
 
     def set_password(self, password):
         self.user_password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
