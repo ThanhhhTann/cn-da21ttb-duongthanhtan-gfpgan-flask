@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stable Diffusion 3.5</title>
+    <script src="/frontend/js/sd.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        input, select, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        img {
+            margin-top: 20px;
+            width: 512px;
+            height: auto;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Nhập Prompt để Tạo Ảnh</h2>
+    <textarea id="promptInput" rows="4" cols="50" placeholder="Nhập mô tả ảnh..."></textarea><br>
+
+    <label>Aspect Ratio:</label>
+    <select id="aspectRatio">
+        <option value="1:1">1:1</option>
+        <option value="16:9">16:9</option>
+        <option value="21:9">21:9</option>
+        <option value="3:2">3:2</option>
+        <option value="4:5">4:5</option>
+        <option value="9:16">9:16</option>
+    </select>
+
+    <button onclick="generateImage()">Tạo Ảnh</button>
+
+    <h2>Ảnh Đã Tạo</h2>
+    <img id="generatedImage" src="" alt="Chưa có ảnh">
+
+</body>
+</html>

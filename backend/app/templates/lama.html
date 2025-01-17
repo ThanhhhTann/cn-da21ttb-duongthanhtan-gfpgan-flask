@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xóa Vật Thể</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        #imageCanvas, #maskCanvas {
+            border: 2px solid black;
+            max-width: 100%;
+        }
+
+        .button-group {
+            margin-top: 10px;
+        }
+
+        .button-group button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        #imageList {
+            margin-top: 20px;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            width: 300px;
+            height: auto;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Tải ảnh lên để xóa vật thể</h2>
+    <input type="file" id="imageUpload">
+    <button onclick="uploadImage()">Tải lên</button>
+
+    <h2>Ảnh gốc</h2>
+    <canvas id="imageCanvas" width="800" height="500"></canvas>
+    <canvas id="maskCanvas" width="800" height="500" style="display: none;"></canvas>
+
+    <div class="button-group">
+        <button id="brushButton">Bôi vật thể</button>
+        <button id="clearButton">Xóa toàn bộ nét vẽ</button>
+        <button id="removeButton">Xóa thông minh</button>
+        <button id="downloadButton">Tải ảnh xuống</button>
+    </div>
+
+    <h2>Danh sách ảnh đã xử lý</h2>
+    <div id="imageList"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", loadUserImages);
+    </script>
+
+</body>
+    <script src="/frontend/js/lama.js"></script>
+</html>
