@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tô Màu Ảnh</title>
+    <link rel="stylesheet" href="/frontend/css/colorize.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Tải ảnh lên để tô màu</h2>
+        <input type="file" id="imageUpload">
+        <button onclick="uploadImage()">Tải lên</button>
+
+        <h3>Ảnh gốc</h3>
+        <img id="uploadedImage" src="" alt="Ảnh gốc" style="display: none; max-width: 100%; border: 2px solid black;">
+
+        <button onclick="colorizeImage()" class="btn-colorize">Tô màu</button>
+
+        <h3>Ảnh sau khi tô màu</h3>
+        <img id="processedImage" src="" alt="Ảnh đã tô màu" style="display: none; max-width: 100%; border: 2px solid green;">
+
+        <h2>Danh sách ảnh đã tô màu</h2>
+        <div id="imageList"></div>
+    </div>
+
+    <script src="/frontend/js/colorize.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", loadUserImages);
+    </script>
+
+</body>
+</html>
