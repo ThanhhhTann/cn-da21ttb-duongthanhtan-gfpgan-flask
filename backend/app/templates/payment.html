@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Thanh toán</title>
+    <script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=USD"></script>
+    <script src="/frontend/js/payment.js"></script>
+</head>
+<body>
+    <h2>Chọn gói thanh toán</h2>
+    <ul>
+        {% for package in packages %}
+            <li>
+                <strong>{{ package.package_name }}</strong>: ${{ package.package_price }} ({{ package.package_credits }} tín dụng)
+                <div id="paypal-button-{{ package.package_id }}"></div>
+                <script>
+                    payWithPaypal("{{ package.package_id }}", "{{ package.package_price }}", "{{ package.package_credits }}");
+                </script>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

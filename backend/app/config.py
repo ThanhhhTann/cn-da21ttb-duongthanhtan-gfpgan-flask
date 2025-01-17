@@ -19,3 +19,9 @@ class Config:
 
     # Cấu hình dịch vụ Azure Email 
     AZURE_EMAIL_CONNECTION_STRING = os.getenv("AZURE_EMAIL_CONNECTION_STRING")
+
+    # Cấu hình PayPal
+    # Cấu hình PayPal API
+    PAYPAL_CLIENT_ID = os.getenv("PAYPAL_CLIENT_ID")
+    PAYPAL_SECRET = os.getenv("PAYPAL_SECRET")
+    PAYPAL_MODE = os.getenv("PAYPAL_MODE", "sandbox")  # sandbox hoặc live 

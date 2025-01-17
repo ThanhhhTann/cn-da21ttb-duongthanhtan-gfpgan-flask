@@ -14,16 +14,25 @@
             {% if is_admin %}
                 <a href="/admin">Trang Quản Trị</a>
             {% endif %}
+
+            <!-- ✅ Kiểm tra nếu current_user tồn tại và có user_id -->
+            {% if current_user and current_user.user_id %}
+                <a href="{{ url_for('payment.payment_checkout') }}">Thanh toán</a>
+                <span>Số tín dụng: <strong>{{ current_user.total_credits if current_user.total_credits is not none else 0 }}</strong></span>
+            {% endif %}
+
             <a href="/auth/logout">Đăng xuất</a>
         </nav>
-        <!-- Hiển thị Avatar -->
-        {% if current_user %}
+        
+        <!-- Hiển thị Avatar (Bổ sung kiểm tra hình ảnh hợp lệ) -->
+        {% if current_user and current_user.user_avatar %}
             <img src="{{ current_user.user_avatar }}" alt="Avatar" style="width:50px; border-radius:50%;">
         {% else %}
             <img src="https://refinaimages-ehh5dse7h5f8g5ga.z02.azurefd.net/images/cn-logo-default-1.webp" 
             alt="Default Avatar" style="width:50px; border-radius:50%;">
         {% endif %}
     </header>
+    
     <main>
         {% block content %}{% endblock %}
     </main>

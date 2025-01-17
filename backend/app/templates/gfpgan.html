@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Khôi phục ảnh</title>
+    <script src="/frontend/js/gfpgan.js"></script>
+</head>
+<body>
+    <h2>Tải ảnh lên để khôi phục</h2>
+    <input type="file" id="imageUpload">
+    <button onclick="uploadImage()">Tải lên</button>
+
+    <h2>Ảnh gốc</h2>
+    <img id="originalImage" src="" width="300">
+
+    <h2>Ảnh đã khôi phục</h2>
+    <img id="restoredImage" src="" width="300">
+
+    <button onclick="restoreImage()">Khôi phục ảnh</button>
+
+    <h2>Danh sách ảnh của bạn</h2>
+    <div id="imageList"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", loadImages);
+    </script>
+</body>
+</html>

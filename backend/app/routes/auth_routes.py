@@ -149,7 +149,12 @@ def microsoft_callback():
             db.session.commit()
 
     # Đăng nhập thành công
-    jwt_token = create_access_token(identity=user_email, additional_claims={"role": "user"})
+    if existing_user:
+        user_id = existing_user.user_id
+    else:
+        user_id = new_user.user_id  # Nếu mới tạo thì lấy user_id của new_user
+
+    jwt_token = create_access_token(identity=str(user_id), additional_claims={"role": "user"})
     response = make_response(redirect(url_for('main.home')))
     set_access_cookies(response, jwt_token)
     flash("Đăng nhập thành công với Microsoft!")
