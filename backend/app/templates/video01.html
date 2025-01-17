@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Video từ Ảnh</title>
+    <script src="/frontend/js/video01.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        img, video {
+            width: 80%;
+            max-width: 600px;
+            margin: 10px;
+            border: 2px solid black;
+        }
+        .media-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Tải ảnh lên</h2>
+    <input type="file" id="imageUpload">
+    <button onclick="uploadImage()">Tải lên</button>
+
+    <div class="media-container">
+        <h3>Ảnh vừa tải lên</h3>
+        <img id="uploadedImage" style="display: none;">
+    </div>
+
+    <h2>Nhập mô tả video</h2>
+    <input type="text" id="prompt" placeholder="Nhập prompt...">
+    <button onclick="generateVideo()">Tạo video</button>
+
+    <h2>Video đã tạo</h2>
+    <video id="processedVideo" controls style="display: none;"></video>
+
+    <h2>Danh sách video đã tạo</h2>
+    <div id="videoList"></div>
+
+</body>
+</html>

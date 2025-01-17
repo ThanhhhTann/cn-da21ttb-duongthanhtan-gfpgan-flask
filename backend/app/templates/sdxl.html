@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDXL Lightning - Tạo ảnh AI</title>
+    <script src="/frontend/js/sdxl.js"></script>
+</head>
+<body>
+    <h2>Tạo ảnh AI bằng SDXL Lightning 4-step</h2>
+    <textarea id="prompt" placeholder="Nhập mô tả ảnh..."></textarea>
+    
+    <label for="aspectRatio">Tỉ lệ ảnh:</label>
+    <select id="aspectRatio">
+        <option value="1:1">1:1</option>
+        <option value="16:9">16:9</option>
+        <option value="3:2">3:2</option>
+        <option value="4:5">4:5</option>
+    </select>
+
+    <button onclick="generateImage()">Tạo ảnh</button>
+
+    <h2>Ảnh đã tạo gần đây</h2>
+    <div id="imageList"></div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo âm thanh từ video</title>
+    <script src="/frontend/js/video.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        video {
+            width: 80%;
+            max-width: 600px;
+            margin: 10px;
+            border: 2px solid black;
+        }
+        .video-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Tải video lên để tạo âm thanh</h2>
+    <input type="file" id="videoUpload">
+    <button onclick="uploadVideo()">Tải lên</button>
+
+    <div class="video-container">
+        <h3>Video vừa tải lên</h3>
+        <video id="uploadedVideo" controls style="display: none;"></video>
+    </div>
+
+    <h2>Nhập mô tả âm thanh</h2>
+    <input type="text" id="prompt" placeholder="Mô tả âm thanh...">
+    <button onclick="generateAudio()">Tạo âm thanh</button>
+
+    <h2>Video sau khi tạo âm thanh</h2>
+    <video id="processedVideo" controls style="display: none;"></video>
+
+    <h2>Danh sách video đã xử lý</h2>
+    <div id="videoList"></div>
+
+</body>
+</html>

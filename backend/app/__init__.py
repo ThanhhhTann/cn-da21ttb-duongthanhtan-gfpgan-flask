@@ -31,7 +31,9 @@ from backend.app.routes.gfpgan_routes import gfpgan_blueprint
 from backend.app.routes.esrgan_routes import esrgan_blueprint
 from backend.app.routes.lama_routes import lama_blueprint
 from backend.app.routes.sd_routes import sd_blueprint
-
+from backend.app.routes.sdxl_routes import sdxl_blueprint
+from backend.app.routes.video_routes import video_blueprint
+from backend.app.routes.video01_routes import video01_blueprint
 
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
 app.register_blueprint(main_blueprint)
@@ -42,6 +44,9 @@ app.register_blueprint(gfpgan_blueprint, url_prefix='/gfpgan')
 app.register_blueprint(esrgan_blueprint, url_prefix='/esrgan')
 app.register_blueprint(lama_blueprint, url_prefix='/lama')
 app.register_blueprint(sd_blueprint, url_prefix='/sd')
+app.register_blueprint(sdxl_blueprint, url_prefix='/sdxl')
+app.register_blueprint(video_blueprint, url_prefix="/video")
+app.register_blueprint(video01_blueprint, url_prefix="/video01")
 
 # ✅ Fix lỗi: Kiểm tra token hợp lệ trước khi gọi get_jwt_identity()
 @app.context_processor

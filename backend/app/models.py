@@ -81,3 +81,14 @@ class Image(db.Model):
     image_credits_used = db.Column(Integer, default=2)  # ✅ Mỗi lần xử lý trừ 2 tín dụng
     image_created_at = db.Column(DateTime, default=datetime.utcnow)
     image_updated_at = db.Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class Video(db.Model):
+    __tablename__ = 'videos'
+    video_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = db.Column(UUID(as_uuid=True), db.ForeignKey('users.user_id'), nullable=False)
+    video_original_url = db.Column(String(255), nullable=False)
+    video_processed_url = db.Column(String(255), nullable=True)
+    video_status = db.Column(String(20), default='pending')  # pending, completed, failed
+    video_credits_used = db.Column(Integer, default=2)  # Mỗi lần xử lý trừ 2 tín dụng
+    video_created_at = db.Column(DateTime, default=datetime.utcnow)
+    video_updated_at = db.Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
