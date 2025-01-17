@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Nâng cấp ảnh</title>
+    <script src="/frontend/js/esrgan.js"></script>
+</head>
+<body>
+    <h2>Tải ảnh lên để nâng cấp</h2>
+    <input type="file" id="imageUpload">
+    <button onclick="uploadImage()">Tải lên</button>
+
+    <h2>Cấu hình nâng cấp</h2>
+    <label for="scale">Tỉ lệ phóng to:</label>
+    <select id="scale">
+        <option value="2">2x</option>
+        <option value="3">3x</option>
+        <option value="4">4x</option>
+    </select>
+
+    <label>
+        <input type="checkbox" id="faceEnhance">
+        Cải thiện khuôn mặt
+    </label>
+
+    <h2>Ảnh gốc</h2>
+    <img id="originalImage" src="" width="300">
+
+    <h2>Ảnh đã nâng cấp</h2>
+    <img id="enhancedImage" src="" width="300">
+
+    <button onclick="enhanceImage()">Nâng cấp ảnh</button>
+
+    <h2>📂 Ảnh Đã Tải Lên (User Uploads)</h2>
+    <div id="uploadedImages"></div>
+
+    <h2>📂 Ảnh Đã Nâng Cấp (Enhanced Images)</h2>
+    <div id="enhancedImages"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", loadImages);
+    </script>
+</body>
+</html>

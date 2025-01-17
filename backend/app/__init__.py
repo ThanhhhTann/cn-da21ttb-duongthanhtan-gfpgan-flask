@@ -28,6 +28,7 @@ from .routes.frontend_routes import frontend_bp
 from .routes.password_routes import password_blueprint
 from backend.app.routes.payment_routes import payment_blueprint
 from backend.app.routes.gfpgan_routes import gfpgan_blueprint
+from backend.app.routes.esrgan_routes import esrgan_blueprint
 
 
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
@@ -36,6 +37,7 @@ app.register_blueprint(frontend_bp)
 app.register_blueprint(password_blueprint, url_prefix='/password')
 app.register_blueprint(payment_blueprint, url_prefix='/payment')
 app.register_blueprint(gfpgan_blueprint, url_prefix='/gfpgan')
+app.register_blueprint(esrgan_blueprint, url_prefix='/esrgan')
 
 # ✅ Fix lỗi: Kiểm tra token hợp lệ trước khi gọi get_jwt_identity()
 @app.context_processor
